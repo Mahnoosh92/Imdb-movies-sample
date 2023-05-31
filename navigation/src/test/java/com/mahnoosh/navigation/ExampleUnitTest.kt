@@ -1,4 +1,4 @@
-package com.example.navigation
+package com.mahnoosh.navigation
 
 import org.junit.Test
 

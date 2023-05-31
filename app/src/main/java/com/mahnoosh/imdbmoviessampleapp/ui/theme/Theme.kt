@@ -1,70 +1,145 @@
 package com.mahnoosh.imdbmoviessampleapp.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.shapes
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = com.mahnoosh.imdbmoviessampleapp.ui.theme.Purple80,
-    secondary = com.mahnoosh.imdbmoviessampleapp.ui.theme.PurpleGrey80,
-    tertiary = com.mahnoosh.imdbmoviessampleapp.ui.theme.Pink80
-)
+import com.mahnoosh.core.ui.theme.blue200
+import com.mahnoosh.core.ui.theme.blue500
+import com.mahnoosh.core.ui.theme.blue700
+import com.mahnoosh.core.ui.theme.green200
+import com.mahnoosh.core.ui.theme.green500
+import com.mahnoosh.core.ui.theme.green700
+import com.mahnoosh.core.ui.theme.orange200
+import com.mahnoosh.core.ui.theme.orange500
+import com.mahnoosh.core.ui.theme.orange700
+import com.mahnoosh.core.ui.theme.purple
+import com.mahnoosh.core.ui.theme.purple200
+import com.mahnoosh.core.ui.theme.purple700
+import com.mahnoosh.core.ui.theme.teal200
 
-private val LightColorScheme = lightColorScheme(
-    primary = com.mahnoosh.imdbmoviessampleapp.ui.theme.Purple40,
-    secondary = com.mahnoosh.imdbmoviessampleapp.ui.theme.PurpleGrey40,
-    tertiary = com.mahnoosh.imdbmoviessampleapp.ui.theme.Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
+// dark palettes
+private val DarkGreenColorPalette = darkColorScheme(
+    primary = green200,
+    secondary = teal200,
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.Black,
     onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    onBackground = Color.White,
+    onSurface = Color.White,
+    error = Color.Red,
 )
+
+private val DarkPurpleColorPalette = darkColorScheme(
+    primary = purple200,
+    secondary = teal200,
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.Black,
+    onSecondary = Color.White,
+    onBackground = Color.White,
+    onSurface = Color.White,
+    error = Color.Red,
+)
+
+private val DarkBlueColorPalette = darkColorScheme(
+    primary = blue200,
+    secondary = teal200,
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.Black,
+    onSecondary = Color.White,
+    onBackground = Color.White,
+    onSurface = Color.White,
+    error = Color.Red,
+)
+
+private val DarkOrangeColorPalette = darkColorScheme(
+    primary = orange200,
+    secondary = teal200,
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.Black,
+    onSecondary = Color.White,
+    onBackground = Color.White,
+    onSurface = Color.White,
+    error = Color.Red,
+)
+
+// Light pallets
+private val LightGreenColorPalette = lightColorScheme(
+    primary = green500,
+    secondary = teal200,
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black
+)
+
+private val LightPurpleColorPalette = lightColorScheme(
+    primary = purple,
+    secondary = teal200,
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black
+)
+
+private val LightBlueColorPalette = lightColorScheme(
+    primary = blue500,
+    secondary = teal200,
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black
+)
+
+private val LightOrangeColorPalette = lightColorScheme(
+    primary = orange500,
+    secondary = teal200,
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black
+)
+
+enum class ColorPallet {
+    PURPLE, GREEN, ORANGE, BLUE, WALLPAPER
+}
 
 @Composable
-fun ImdbMoviesSampleAppTheme(
+fun ComposeAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    colorPallet: ColorPallet = ColorPallet.GREEN,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
+    val colors = when (colorPallet) {
+        ColorPallet.GREEN -> if (darkTheme) DarkGreenColorPalette else LightGreenColorPalette
+        ColorPallet.PURPLE -> if (darkTheme) DarkPurpleColorPalette else LightPurpleColorPalette
+        ColorPallet.ORANGE -> if (darkTheme) DarkOrangeColorPalette else LightOrangeColorPalette
+        ColorPallet.BLUE -> if (darkTheme) DarkBlueColorPalette else LightBlueColorPalette
+        else -> if (darkTheme) DarkBlueColorPalette else LightBlueColorPalette
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
+        colorScheme = colors,
+        typography = typography,
+        shapes = shapes,
         content = content
     )
 }
