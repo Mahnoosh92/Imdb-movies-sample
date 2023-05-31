@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -19,12 +20,19 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        buildConfigField "String", "API_KEY", "\"${properties.getProperty('API_KEY')}\""
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+        }
+        debug {
+            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         }
     }
     compileOptions {
@@ -36,6 +44,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     kotlin {
         jvmToolchain(8)
@@ -69,33 +78,39 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
     // Coroutine
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
 
     //Hilt
-    implementation 'com.google.dagger:hilt-android:2.44.2'
+    api 'com.google.dagger:hilt-android:2.44.2'
     kapt 'com.google.dagger:hilt-compiler:2.44.2'
 
     //Coil
-    implementation "io.coil-kt:coil-compose:2.3.0"
+    api "io.coil-kt:coil-compose:2.3.0"
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.okhttp3:okhttp:4.10.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
+    api "com.squareup.retrofit2:retrofit:2.9.0"
+    api "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
+    api "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
     // GSON
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
     // Navigation
-    implementation "androidx.navigation:navigation-compose:$nav_version"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    api "androidx.navigation:navigation-compose:$nav_version"
+    api 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0"
+    api("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    api "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
 
     // Feature module Support
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+    api "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+    // Firebase
+    api platform('com.google.firebase:firebase-bom:31.1.1')
+    api 'com.google.firebase:firebase-analytics-ktx'
+    api 'com.google.firebase:firebase-auth-ktx'
+    api 'com.google.android.gms:play-services-auth:20.5.0'
 
     // Mockito
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
@@ -106,8 +121,9 @@ dependencies {
     // Turbine
     testImplementation 'app.cash.turbine:turbine:0.13.0'
 
-    // Material
-    implementation "androidx.compose.material:material:1.4.3"
+    // Material3
+    api "androidx.compose.material3:material3:1.1.0"
+    api "androidx.compose.material3:material3-window-size-class:1.1.0"
 
     // Test
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
