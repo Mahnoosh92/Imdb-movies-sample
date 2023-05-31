@@ -1,4 +1,4 @@
-package com.mahnoosh.core
+package com.mahnoosh.dashboard
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,9 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.mahnoosh.core.ui.theme.ImdbMoviesSampleAppTheme
+import com.mahnoosh.dashboard.ui.theme.ImdbMoviesSampleAppTheme
 
-class CoreActivity : ComponentActivity() {
+ class DashboardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +22,7 @@ class CoreActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Dashboard()
                 }
             }
         }
@@ -30,17 +30,7 @@ class CoreActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Dashboard() {
+    Text(text = "Dashboard")
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ImdbMoviesSampleAppTheme {
-        Greeting("Android")
-    }
-}

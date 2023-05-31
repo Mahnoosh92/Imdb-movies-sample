@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "742140290769",
+    "project_id": "imdbapp-2b293",
+    "storage_bucket": "imdbapp-2b293.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742140290769:android:1d7a839c150791024bc7f0",
+        "android_client_info": {
+          "package_name": "com.mahnoosh.imdbmoviessampleapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_wLORj-_tac4Xc4FPOLiKxBbBGY-saGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
