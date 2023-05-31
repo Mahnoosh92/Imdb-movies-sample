@@ -1,4 +1,4 @@
-package com.mahnoosh.navigation.ui.theme
+package com.example.navigation.ui.theme
 
 import android.app.Activity
 import android.os.Build

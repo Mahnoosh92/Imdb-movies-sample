@@ -1,4 +1,4 @@
-package com.mahnoosh.navigation.ui.theme
+package com.example.navigation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

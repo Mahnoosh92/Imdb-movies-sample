@@ -1,8 +1,2 @@
-package com.mahnoosh.athentication.ui.signinWithEmailAndPassword
+package com.mahnoosh.athentication.signinWithEmailAndPassword
 
-import androidx.compose.runtime.Composable
-
-@Composable
-fun SignInWithEmailAndPassword() {
-
-}

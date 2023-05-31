@@ -1,4 +1,4 @@
-package com.mahnoosh.core.data.models.local.app
+package com.mahnoosh.core.data.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -1,8 +1,4 @@
-package com.mahnoosh.core.data.datasource.local.user
-
-import com.google.firebase.auth.FirebaseUser
+package com.mahnoosh.core.data.datasource.local
 
 interface UserDatasource {
-    suspend fun getUser(): FirebaseUser?
-    fghfghfgf
 }

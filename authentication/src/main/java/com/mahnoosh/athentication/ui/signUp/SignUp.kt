@@ -1,8 +1,2 @@
-package com.mahnoosh.athentication.ui.signUp
+package com.mahnoosh.athentication.signUp
 
-import androidx.compose.runtime.Composable
-
-@Composable
-fun SignUp() {
-
-}
