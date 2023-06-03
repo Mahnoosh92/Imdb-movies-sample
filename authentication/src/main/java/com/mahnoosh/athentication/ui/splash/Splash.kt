@@ -41,6 +41,7 @@ fun Splash(
     val splashUiState by viewModel.splashUiState.collectAsState()
     if (splashUiState.isLoggedIn == true) {
         navigate(NavigationDirections.Auth.signInWithEmailAndPassword.destination)
+        viewModel.consumeIsLoggedIn()
     }
 }
 
