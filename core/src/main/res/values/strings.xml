@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">core</string>
+
+    <!-- error -->
+    <string name="error_general">Something went wrong!</string>
+    <string name="error_general_input">Please check your inputs!</string>
+    <string name="text_validation_success">Validation is successful</string>
+    <string name="text_validation_error_empty_field">Cannot be empty</string>
+    <string name="text_validation_error_email">Email is not valid</string>
+    <string name="text_validation_error_password">Password must contain at least 1 special character and 6 characters</string>
+    <string name="text_validation_error_phone">Phone is not valid</string>
+    <string name="login_invalid_error">Error on authentication values</string>
 </resources>

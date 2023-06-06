@@ -1,5 +1,6 @@
 package com.mahnoosh.athentication.ui.signinWithEmailAndPassword
 
+import android.content.Intent
 import android.widget.EditText
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,9 +21,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,12 +34,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mahnoosh.athentication.R
+import com.mahnoosh.core.ui.commons.LoadingButton
 import com.mahnoosh.core.ui.commons.UserInput
 import com.mahnoosh.core.ui.commons.UserInputTypes
+import com.mahnoosh.navigation.NavigationDirections
 
 @Composable
-fun SignInWithEmailAndPassword(modifier: Modifier = Modifier) {
+fun SignInWithEmailAndPassword(
+    modifier: Modifier = Modifier,
+    viewModel: SignInWithEmailAndPasswordViewModel,
+    navigateToDestination: @Composable (String) -> Unit
+) {
 
     var email = remember {
         mutableStateOf("")
@@ -43,8 +54,28 @@ fun SignInWithEmailAndPassword(modifier: Modifier = Modifier) {
     var password = remember {
         mutableStateOf("")
     }
+    val signInWithEmailAndPasswordUiState by viewModel.signInWithEmailAndPasswordUiState.collectAsState()
+
+    signInWithEmailAndPasswordUiState.isSignInSuccessful?.let {
+        viewModel.apply {
+            consumeError()
+            consumeIsEmailValidated()
+            consumeIsLoading()
+            consumeIsSignInSuccessful()
+            consumeIsPasswordValidated()
+            navigateToDestination(NavigationDirections.Dashboard.dashboard.destination)
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+
+        viewModel.validateEmail(email = snapshotFlow { email.value })
+        viewModel.validatePassword(password = snapshotFlow { password.value })
+    }
+
     Box(
         modifier = modifier
+            .padding(20.dp)
             .fillMaxSize()
             .padding(4.dp), contentAlignment = Alignment.Center
     ) {
@@ -69,7 +100,11 @@ fun SignInWithEmailAndPassword(modifier: Modifier = Modifier) {
             UserInput(
                 type = UserInputTypes.EMAIL,
                 Icons.Filled.Email,
-                label = "Email"
+                label = "Email",
+                isError = signInWithEmailAndPasswordUiState.isEmailValidated?.isSuccess?.not()
+                    ?: false,
+                errorMessage = viewModel.getString(signInWithEmailAndPasswordUiState.isEmailValidated?.errorMessage)
+                    ?: ""
             ) {
                 email.value = it
             }
@@ -77,12 +112,22 @@ fun SignInWithEmailAndPassword(modifier: Modifier = Modifier) {
             UserInput(
                 type = UserInputTypes.PASSWORD,
                 Icons.Filled.Settings,
-                label = "Password"
+                label = "Password",
+                isError = signInWithEmailAndPasswordUiState.isPasswordValidated?.isSuccess?.not()
+                    ?: false,
+                errorMessage = viewModel.getString(signInWithEmailAndPasswordUiState.isPasswordValidated?.errorMessage)
+                    ?: ""
             ) {
                 password.value = it
             }
             Spacer(modifier = modifier.height(10.dp))
-            
+            LoadingButton(
+                "SignIn",
+                isEnabled = (signInWithEmailAndPasswordUiState.isEmailValidated?.isSuccess ?: false && signInWithEmailAndPasswordUiState.isPasswordValidated?.isSuccess ?: false),
+                showLoader = signInWithEmailAndPasswordUiState.isLoading ?: false
+            ) {
+                viewModel.signInWithEmailAndPassword(email.value, password.value)
+            }
         }
     }
 }
@@ -90,5 +135,5 @@ fun SignInWithEmailAndPassword(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewSignInWithEmailAndPassword() {
-    SignInWithEmailAndPassword()
+    SignInWithEmailAndPassword(viewModel = hiltViewModel<SignInWithEmailAndPasswordViewModel>()) {}
 }

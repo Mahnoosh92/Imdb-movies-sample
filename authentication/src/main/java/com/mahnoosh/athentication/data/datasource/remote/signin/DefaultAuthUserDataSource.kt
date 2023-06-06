@@ -27,4 +27,24 @@ class DefaultAuthUserDataSource @Inject constructor(private val firebaseAuth: Fi
 
         }
     }
+
+    override suspend fun signInUserWithEmailAndPassword(
+        email: String,
+        password: String
+    ): AuthResult? {
+        return suspendCancellableCoroutine { continuation ->
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+
+                    if (task.isSuccessful) {
+                        continuation.resume(task.result)
+                    } else {
+                        continuation.resumeWithException(
+                            task.exception ?: Exception("Something went wrong!")
+                        )
+                    }
+                }
+
+        }
+    }
 }

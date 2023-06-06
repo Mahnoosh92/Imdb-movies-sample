@@ -12,4 +12,10 @@ class DefaultAuthUserRepository @Inject constructor(private val authUserDataSour
         password: String
     ): AuthResult? =
         authUserDataSource.createUserWithEmailAndPassword(email = email, password = password)
+
+    override suspend fun signInUserWithEmailAndPassword(
+        email: String,
+        password: String
+    ): AuthResult? =
+        authUserDataSource.signInUserWithEmailAndPassword(email = email, password = password)
 }
