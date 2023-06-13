@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mahnoosh.navigation.NavigationDirections
+import com.mahnoosh.athentication.ui.navigation.AuthScreens
 
 @Composable
 fun Splash(
     modifier: Modifier = Modifier,
     viewModel: SplashViewModel = hiltViewModel(),
-    navigate: (String) -> Unit
+    navigate: (String?) -> Unit
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.isUserLoggedIn()
@@ -40,9 +40,12 @@ fun Splash(
     }
     val splashUiState by viewModel.splashUiState.collectAsState()
     if (splashUiState.isLoggedIn == true) {
-        navigate(NavigationDirections.Auth.signInWithEmailAndPassword.destination)
-        viewModel.consumeIsLoggedIn()
+        navigate(null)
+
+    } else {
+        navigate(AuthScreens.SignInWithEmailAndPassword.route)
     }
+    viewModel.consumeIsLoggedIn()
 }
 
 @Preview(showBackground = true)

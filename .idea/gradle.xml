@@ -15,7 +15,6 @@
             <option value="$PROJECT_DIR$/authentication" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/dashboard" />
-            <option value="$PROJECT_DIR$/navigation" />
           </set>
         </option>
       </GradleProjectSettings>

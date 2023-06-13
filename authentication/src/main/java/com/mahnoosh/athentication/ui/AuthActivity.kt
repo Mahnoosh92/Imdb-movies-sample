@@ -5,22 +5,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mahnoosh.athentication.ui.signinWithEmailAndPassword.SignInWithEmailAndPassword
-import com.mahnoosh.athentication.ui.signinWithEmailAndPassword.SignInWithEmailAndPasswordViewModel
-import com.mahnoosh.athentication.ui.splash.Splash
+import com.mahnoosh.athentication.ui.navigation.AuthNavGraph
 import com.mahnoosh.core.data.models.local.app.AppThemeState
 import com.mahnoosh.core.ui.theme.ComposeAppTheme
 import com.mahnoosh.dashboard.DashboardActivity
-import com.mahnoosh.navigation.NavigationDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,9 +33,7 @@ class AuthActivity : ComponentActivity() {
 
             val navController = rememberNavController()
             BaseView(appTheme.value) {
-                AuthNAvHost(navController = navController) {
-                    LocalContext.current.startActivity(Intent(this, DashboardActivity::class.java))
-                }
+                ManageAuthContent(modifier = Modifier, navController = navController)
             }
         }
     }
@@ -55,22 +50,16 @@ class AuthActivity : ComponentActivity() {
     }
 
     @Composable
-    fun AuthNAvHost(navController: NavHostController, NavigateToFlow: @Composable () -> Unit) {
-        NavHost(
-            navController = navController,
-            startDestination = NavigationDirections.Auth.splash.destination
-        ) {
-            composable(NavigationDirections.Auth.splash.destination) {
-                Splash() {
-                    navController.navigate(it) {
-                        popUpTo(NavigationDirections.Auth.splash.destination) { inclusive = true }
-                    }
-                }
-            }
-            composable(NavigationDirections.Auth.signInWithEmailAndPassword.destination) {
-                SignInWithEmailAndPassword(viewModel = hiltViewModel<SignInWithEmailAndPasswordViewModel>()) {
-                    NavigateToFlow()
-                }
+    fun ManageAuthContent(modifier: Modifier = Modifier, navController: NavHostController) {
+        val currentContext = LocalContext.current
+        Scaffold(topBar = {}, bottomBar = {}) { paddings ->
+            AuthNavGraph(modifier = modifier.padding(paddings), navController = navController) {
+                currentContext.startActivity(
+                    Intent(
+                        this@AuthActivity,
+                        DashboardActivity::class.java
+                    )
+                )
             }
         }
     }

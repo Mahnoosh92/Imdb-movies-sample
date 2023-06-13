@@ -1,5 +1,6 @@
 package com.mahnoosh.athentication.ui.splash
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mahnoosh.core.data.di.MainDispatcher
@@ -36,7 +37,7 @@ class SplashViewModel @Inject constructor(
             when (val result = userUseCase.getUser()) {
                 is ResultWrapper.Success -> {
                     _splashUiState.update { splashUiState ->
-                        splashUiState.copy(isLoggedIn = true)
+                        splashUiState.copy(isLoggedIn = (result.data==null).not())
                     }
                 }
 
